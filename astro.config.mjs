@@ -1,61 +1,15 @@
 import { defineConfig } from 'astro/config';
-
-import react from '@astrojs/react';
-
 import mdx from '@astrojs/mdx';
+import sitemap from '@astrojs/sitemap';
+import staticAdapter from '@astrojs/static';
 
-import tailwindcss from '@tailwindcss/vite';
-import { remarkReadingTime } from './src/lib/remark-reading-time.mjs';
-import rehypeMermaid from 'rehype-mermaid';
-
-import vercel from '@astrojs/vercel';
-
-// Use different strategies based on environment
-const isProduction = process.env.NODE_ENV === 'production';
-const isVercel = process.env.VERCEL === '1';
-
-// Use 'pre-built' on Vercel/production to avoid Playwright, 'inline-svg' locally
-const mermaidStrategy = isProduction || isVercel ? 'pre-built' : 'inline-svg';
-
-console.log(`Using Mermaid strategy: ${mermaidStrategy}`);
-
-// https://astro.build/config
 export default defineConfig({
-  site: 'https://angienaranjod.github.io',
-  base: 'AngieNaranjoD.github.io', // IMPORTANT: Replace with your actual domain in production
+  adapter: staticAdapter(),
+  site: 'https://tusitio.github.io',
   integrations: [
-    react(),
-    mdx({
-      remarkPlugins: [remarkReadingTime],
-      rehypePlugins: [
-        [
-          rehypeMermaid,
-          {
-            strategy:
-              process.env.NODE_ENV === 'production'
-                ? 'pre-mermaid'
-                : 'inline-svg',
-          },
-        ],
-      ],
-      syntaxHighlight: {
-        type: 'shiki',
-        excludeLangs: ['mermaid'],
-      },
-    }),
+    mdx(),
+    sitemap()
   ],
-
-  i18n: {
-    locales: ['fr', 'en'],
-    defaultLocale: 'fr',
-    routing: {
-      prefixDefaultLocale: false,
-    },
-  },
-
-  vite: {
-    plugins: [tailwindcss()],
-  },
-
-  adapter: vercel(),
+  base: '/',
+  output: 'static',
 });
