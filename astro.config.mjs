@@ -1,5 +1,5 @@
 import { defineConfig } from 'astro/config';
-
+import staticAdapter from '@astrojs/static';
 import react from '@astrojs/react';
 
 import mdx from '@astrojs/mdx';
@@ -21,7 +21,8 @@ console.log(`Using Mermaid strategy: ${mermaidStrategy}`);
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://example.com', // IMPORTANT: Replace with your actual domain in production
+  site: 'https://angienaranjod.github.io', // IMPORTANT: Replace with your actual domain in production
+  output: 'static',
   integrations: [
     react(),
     mdx({
